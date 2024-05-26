@@ -1,0 +1,74 @@
+CREATE TABLE employee (
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR(50) NOT NULL,
+    emp_salary NUMBER,
+    dep_id NUMBER,
+    emp_job VARCHAR(20),
+    hiredate DATE
+);
+
+INSERT INTO employee (emp_id, emp_name, dep_id, emp_salary, emp_job, hiredate)
+VALUES (1, 'Tareq', 1, 5000, 'IT', TO_DATE('07/10/2001', 'DD/MM/YYYY'));
+
+INSERT INTO employee (emp_id, emp_name, dep_id, emp_salary, emp_job, hiredate)
+VALUES (2, 'Ahmed', 1, 2000, 'IT', TO_DATE('11/11/2000', 'DD/MM/YYYY'));
+
+INSERT INTO employee (emp_id, emp_name, dep_id, emp_salary, emp_job, hiredate)
+VALUES (3, 'Yousef', 3, 750, 'HR', TO_DATE('15/05/2005', 'DD/MM/YYYY'));
+
+INSERT INTO employee (emp_id, emp_name, dep_id, emp_salary, emp_job, hiredate)
+VALUES (4, 'Nabeel', 4, 1500, 'CS', TO_DATE('10/11/2000', 'DD/MM/YYYY'));
+
+INSERT INTO employee (emp_id, emp_name, dep_id, emp_salary, emp_job, hiredate)
+VALUES (5, 'Ogla', 4, 3000, 'CS', TO_DATE('09/09/1999', 'DD/MM/YYYY'));
+
+INSERT INTO employee (emp_id, emp_name, dep_id, emp_salary, emp_job, hiredate)
+VALUES (6, 'Mohamed', 3, 500, 'HR', TO_DATE('01/01/1991', 'DD/MM/YYYY'));
+
+
+SELECT 
+    AVG(emp_salary) AS avg_salary, 
+    MAX(emp_salary) AS max_salary, 
+    MIN(emp_salary) AS min_salary, 
+    SUM(emp_salary) AS total_salary
+FROM employee;
+
+
+SELECT COUNT(*) AS employee_count
+FROM employee;
+
+
+SELECT dep_id, AVG(emp_salary) AS avg_salary
+FROM employee
+WHERE emp_salary >= 1500
+GROUP BY dep_id;
+
+
+SELECT dep_id, AVG(emp_salary) AS avg_salary
+FROM employee
+GROUP BY dep_id;
+
+
+SELECT dep_id, emp_job, AVG(emp_salary) AS avg_salary
+FROM employee
+GROUP BY dep_id, emp_job;
+
+
+SELECT dep_id, MAX(emp_salary) AS max_salary
+FROM employee
+GROUP BY dep_id
+HAVING SUM(emp_salary) >= 1500;
+
+
+SELECT dep_id, SUM(emp_salary) AS total_salary
+FROM employee
+GROUP BY dep_id
+HAVING SUM(emp_salary) >= 1500;
+
+
+SELECT emp_job, SUM(emp_salary) AS payroll
+FROM employee
+WHERE emp_job NOT LIKE 'SALES%'
+GROUP BY emp_job
+HAVING SUM(emp_salary) > 5000
+ORDER BY SUM(emp_salary);

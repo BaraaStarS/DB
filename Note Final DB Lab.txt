@@ -1,0 +1,292 @@
+constraints :
+student_id number (12) unique / primary key/not null,
+
+select * from  user_constraints;  -->show constraints 
+
+___________________________________________________________________
+
+describe  student; -->show info about table 
+
+select *from  student; --> display all column in table 
+
+drop table student ; --> delete the table and its content 
+
+insert into  student(stu_name,stu_major) values ('Ahmad ','CS',); -->add data or column to table 
+
+truncate table student; --> delete column or date but not delete table 
+
+SELECT table_name FROM user_tables ; -->display the tables and its name 
+
+RENAME student TO student_table; --> rename table 
+delete from employy where id =1; --> Delete specific Row
+delete from employy ; -->  Delete all Row
+
+select distinct(name of column ) from (name of table ) ; --> prevent duplicate , don't display duplicate date 
+
+	
+Alter table : ( تعديل التيبل )
+alter table (name of table ) add (name of new column ) varchar2(10); \\ ADD column
+alter table  drop  column (name of column) ; \\ DROP column
+ALTER TABLE (name of table )  MODIFY Email varchar( 50 ) NOT NULL; \\ MODIFY column 
+alter table (name of table )  rename column Email to Emp_email; \\RENAME column 
+ALTER TABLE (name of table )  ADD CONSTRAINT pk_emp_id PRIMARY KEY (Emp_id); \\ ADD CONSTRAINT column
+ALTER TABLE (name of table )  drop CONSTRAINT pk_emp_id ; \\ DROP CONSTRAINT column
+
+
+Update table :(تحديث الداتا في التيبل )
+update student 
+    set stu_name='Noor'
+    ,stu_major='cyber '
+    where stu_id=1;
+
+______________________________________________________________________________________
+
+Primary key & forign Key :
+
+create table A(
+dep_num number (10) primary key ,
+   
+);
+
+create table B(
+ id number (10)primary key,
+ dep_num number (10),
+
+constraint fk_dep_num foreign key (dep_num)
+ references department
+);
+
+__________________________________________________________________________________________
+
+Date (التاريخ )
+
+create table employy(
+  
+    hiredate date,
+    );
+
+insert into employy  values(SYSDATE); --> The date of system (automatically )
+insert into employy values (TO_DATE('4/4/2024','DD/MM/YYYY')); --> you add the date and specify its format using function TO_DATE
+
+_______________________________________________________________________________________
+
+Concatenation:
+select Emp_name || Dep_id as "Employee & Department Number  "  \\ Concatenation 
+from Employee;
+
+
+select Emp_name || 'And the Department number Is:  ' || Dep_id as "Employee Deatils "
+from Employee;
+
+________________________________________________________________________________________
+
+conditions :
+
+SELECT (column)
+  FROM (table )
+ WHERE (column) BETWEEN 1000 AND 1500 ; --> range of values.
+
+
+SELECT (column)
+ FROM (table )
+ WHER (column) IN (7902, 7566, 7788); --> test for values in a list ارجاع فقط الارقام المذكوره 
+
+
+ SELECT (column)
+  FROM (table )
+  WHERE (column) IS NULL; --> Test for null values
+
+select (column) from (table ) where (column) like '_h%';  \\  h ارجاع الاسم الي ثاني حرف فيه 
+where (column) like 'a%'; \\ بدايته a
+where (column) like '__o%';  \\ الحرف الثالث o 
+
+______________________________________________________________________________________________
+
+ASC: ascending order, default ترتيب تصاعدي  من الأصغر إلى الأكبر
+DESC: descending order  تنازليا
+
+select (column ) as 'alias name " 
+    FROM (table) 
+    order by (column) DESC;
+_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+
+                                                        Final material 
+
+
+
+Group Function :
+
+select avg(column),max(column),min(column),sum(column)
+    from (table) where (condition) ;
+
+Ex:
+select avg(emp_salary),max(emp_salary),min(emp_salary),sum(emp_salary)
+    from employee where emp_job like 'HR%';
+
+_______
+
+select count (column ) from (table); -->  عدد الاشخاص الموجودين بالتيبل حسب ال العامود 
+EX: select count (emp_id) from employee; 
+
+_________
+
+select (column),avg(column)
+from (table) where (condition)
+group by (column); 
+
+Ex:
+select dep_id,avg(emp_salary)
+from employee where emp_salary>=1000
+group by dep_id; -->calculates the average salary for employees in each department, but only includes those employees whose salary is 1000 or higher. The results are grouped by department ID.
+
+
+________
+
+select dep_id,max(emp_salary)
+from employee
+group by dep_id
+having sum(emp_salary)>=1500; --> Filters the groups to include only those where the sum of all employees' salaries in the group  is 1500 or more.
+
+_________________________________________________________________________________________________
+
+Alias Name (الاسم المستعار لاختصار الكتابه )
+
+select e.employee_id ,e.first_name ,e.last_name ,p.project_id ,p.project_name 
+from employees e join  projects p on e.employee_id = p.employee_id;
+
+In this example is  employees e  where alias name is (e) and  projects p ,alias name is (p)
+
+_______________________________________________________________________________________________
+
+JOIN:
+
+-Condition & join :
+
+select  EMPLOYEE_ID,FIRST_NAME,LAST_NAME,EMAIL,e.DEPARTMENT_ID,DEPARTMENT_name,LOCATION_ID
+from  hr.employees e , hr.departments d
+where e.DEPARTMENT_ID=d.DEPARTMENT_ID
+and e.salary >10000;
+
+-----
+
+-Natural join/inner join : (حسب عامود متشابهه بيت اكثر من تيبل )
+Ex:
+select EMPLOYEE_ID,FIRST_NAME,LAST_NAME,EMAIL,e.DEPARTMENT_name
+from hr.employees e natural join hr.departments d
+ 
+OR:
+select EMPLOYEE_ID,FIRST_NAME,LAST_NAME,EMAIL,e.DEPARTMENT_name
+where e.DEPARTMENT_ID=d.DEPARTMENT_ID;
+
+
+-----
+
+from 3 or more table :
+select EMPLOYEE_ID,FIRST_NAME,LAST_NAME,d.DEPARTMENT_ID,DEPARTMENT_NAME,l.LOCATION_ID,city
+from hr.employees e join hr.departments d on  e.DEPARTMENT_ID=d.DEPARTMENT_ID 
+join hr.locations l on d.LOCATION_ID=l.LOCATION_ID;
+
+ملاحظه :
+لما يكون عندي عامود موجود في كل تيبل يعني 
+forign key 
+في اكثر من تيبل بحدد بالاوبجكت من اي تيبل بدو يرجع 
+مثال 
+l.LOCATION_ID 
+موجود في تيبل ال لوكيشن وموجود في تيبل الديبارتمنت 
+ف هون حددت انو رح يرجع من تيبل ال لوكيشن عشان ال 
+l.
+
+-----
+Outer join :returns matched rows as well as unmatched rows from one or both tables being joined.
+
+-left outer: Returns all rows from the left table and the matched rows from the right table.
+select e.employee_id ,e.first_name ,e.last_name ,p.project_id ,p.project_name 
+from employees e left outer join projects p on e.employee_id = p.employee_id;
+(برجع كل الموظفين والمشاريع المرتبطه فيهم بس ) 
+برجع كل الداتا والاعمده في تيبل جهة اليسار والاعمدة المتشابهه فقط من تيبل الي بجهة اليمين 
+بالمثال هون تيبل جهة اليسار هو الموظفين 
+واليمين البروجكت 
+
+
+-Right outer :Returns all rows from the right table and the matched rows from the left table
+select e.employee_id ,e.first_name ,e.last_name ,p.project_id ,p.project_name 
+from employees e right outer join projects p on e.employee_id = p.employee_id;
+(برجع كل المشاريع والموظفين المرتبطين فيهم بس يعني بقرأ من اليمين للشمال يمين كل المشاريع والموظفين  الي الهم مشاريع )right outer
+
+عكس ال 
+left 
+
+-Full outer :Returns all rows when there is a match in one of the tables.
+select e.employee_id ,e.first_name ,e.last_name ,p.project_id ,p.project_name 
+from employees e full outer join projects p on e.employee_id = p.employee_id;
+(برجع كل شي لما يكون فيه ع الاقل عامود واحد متشابهه في التيبلز )
+
+
+-----
+self join :
+تعمل join 
+من نفس التيبل من خلال انك تعرف 2 اوبجكت مختلفات
+EX:
+
+create table employee(
+    emp_id number (5) primary key,
+    first_name varchar2 (10),
+    last_name varchar2 (10),
+    salary number (10),
+    manger_id int 
+);
+select worker.emp_id , worker.first_name, worker.manger_id, manger.first_name as manger_first_name
+    from employee worker join employee manger 
+    on worker.manger_id = manger.emp_id;
+
+عرفنا اوببجكت 
+worker 
+واوبجكت 
+manger
+بأشرو ع نفس التيبل 
+employee
+
+-----
+
+cross join : 
+بكون عندك 2 تيبل 
+مبدأ ال 
+join 
+هون انو الصف الاول في التيبل الاول بتاخد مع كل صف في التيبل الثاني ل حتى يخلصو كل الصفوف بالتيبل الثاني 
+وبعدها الصف الثاني في التيبل الاول بتاخد مع كل الصفوف في التيبل الثاني وهكذا 
+يعني زي عملية الضرب 
+
+Ex:
+select e.emp_id,e.first_name,e.last_name,e.salary,s.salary_rang
+from employee e cross join salaries s;
+
+
+
+_____________________________________________________________________
+
+select project_name ,count(*)
+from projects p join employees e
+on p.employee_id =e.employee_id
+group by project_name;
+-->COUNT(*) بترجع عدد الموظفين في كل مشروع 
+_______________________________________________________________________
+ aggregate :
+
+SELECT 
+    AVG(emp_salary) AS avg_salary, -->Calculates the averag
+    MAX(emp_salary) AS max_salary,  -->Finds the highest 
+    MIN(emp_salary) AS min_salary, --> Finds the lowest 
+    SUM(emp_salary) AS total_salary -->  Calculates the total sum 
+FROM employee;
+
+
+______________________________
+
+
+SELECT COUNT(*) AS employee_count
+FROM employee;
+---> calculates the total number of employees in the employee table.
+COUNT(*) to retrieve the total number of rows 
+
+____________________________
